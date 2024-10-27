@@ -32,8 +32,7 @@
             this.btn1kLines = new System.Windows.Forms.Button();
             this.btn10kLines = new System.Windows.Forms.Button();
             this.btn100kLines = new System.Windows.Forms.Button();
-            this.imageCanvas = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.imageCanvas)).BeginInit();
+            this.skglCanvas = new SkiaSharp.Views.Desktop.SKGLControl();
             this.SuspendLayout();
             // 
             // btn10Lines
@@ -76,27 +75,28 @@
             this.btn100kLines.UseVisualStyleBackColor = true;
             this.btn100kLines.Click += new System.EventHandler(this.btn100kLines_Click);
             // 
-            // imageCanvas
+            // skglCanvas
             // 
-            this.imageCanvas.Location = new System.Drawing.Point(12, 41);
-            this.imageCanvas.Name = "imageCanvas";
-            this.imageCanvas.Size = new System.Drawing.Size(812, 480);
-            this.imageCanvas.TabIndex = 4;
-            this.imageCanvas.TabStop = false;
+            this.skglCanvas.BackColor = System.Drawing.Color.Black;
+            this.skglCanvas.Location = new System.Drawing.Point(13, 42);
+            this.skglCanvas.Name = "skglCanvas";
+            this.skglCanvas.Size = new System.Drawing.Size(811, 479);
+            this.skglCanvas.TabIndex = 4;
+            this.skglCanvas.VSync = false;
+            this.skglCanvas.PaintSurface += new System.EventHandler<SkiaSharp.Views.Desktop.SKPaintGLSurfaceEventArgs>(this.skglCanvas_PaintSurface);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(836, 533);
-            this.Controls.Add(this.imageCanvas);
+            this.Controls.Add(this.skglCanvas);
             this.Controls.Add(this.btn100kLines);
             this.Controls.Add(this.btn10kLines);
             this.Controls.Add(this.btn1kLines);
             this.Controls.Add(this.btn10Lines);
             this.Name = "Form1";
             this.Text = "Basic Skia GUI";
-            ((System.ComponentModel.ISupportInitialize)(this.imageCanvas)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -107,7 +107,7 @@
         private System.Windows.Forms.Button btn1kLines;
         private System.Windows.Forms.Button btn10kLines;
         private System.Windows.Forms.Button btn100kLines;
-        private System.Windows.Forms.PictureBox imageCanvas;
+        private SkiaSharp.Views.Desktop.SKGLControl skglCanvas;
     }
 }
 

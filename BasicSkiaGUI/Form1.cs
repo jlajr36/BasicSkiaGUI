@@ -19,77 +19,62 @@ namespace BasicSkiaGUI
         }
 
         Random rand = new Random();
+        int lineCount = 0;
 
-        private void Render(int lineCount)
+        private void skglCanvas_PaintSurface(object sender, SkiaSharp.Views.Desktop.SKPaintGLSurfaceEventArgs e)
         {
-            SKImageInfo imageInfo = new SKImageInfo(
-                width: imageCanvas.Width, 
-                height: imageCanvas.Height,
-                colorType: SKColorType.Rgba8888,
-                alphaType: SKAlphaType.Premul
-            );
-
-            SKSurface surface = SKSurface.Create( imageInfo );
-            SKCanvas canvas = surface.Canvas;
-
-            canvas.Clear(SKColor.Parse("#003366"));
-
-            for (int i = 0; i < lineCount; i++) 
+            SKSurface surface = e.Surface;
+            surface.Canvas.Clear(SKColor.Parse("#003366"));
+            int minWidth = 1;
+            int maxWidth = 10;
+            for (int i = 0; i < lineCount; i++)
             {
-                int minWidth = 1;
-                int maxWidth = 10;
-                float lineWidth = rand.Next(minWidth, maxWidth);
-                SKColor lineColor = new SKColor(
-                    red: (byte)rand.Next(255),
-                    green: (byte)rand.Next(255),
-                    blue: (byte)rand.Next(255),
-                    alpha: (byte)rand.Next(255)
-                );
-                SKPaint linePaint = new SKPaint
+                SKPaint paint = new SKPaint
                 {
-                    Color = lineColor,
-                    StrokeWidth = lineWidth,
-                    IsAntialias = true,
-                    Style = SKPaintStyle.Stroke
+                    Color = new SKColor(
+                        red: (byte)rand.Next(255),
+                        green: (byte)rand.Next(255),
+                        blue: (byte)rand.Next(255),
+                        alpha: (byte)rand.Next(255)),
+                    StrokeWidth = rand.Next(minWidth, maxWidth),
+                    IsAntialias = true
                 };
-                int x1 = rand.Next(imageInfo.Width);
-                int y1 = rand.Next(imageInfo.Height);
-                int x2 = rand.Next(imageInfo.Width);
-                int y2 = rand.Next( imageInfo.Height);
-                canvas.DrawLine(x1, y1, x2, y2, linePaint);
+                surface.Canvas.DrawLine(
+                    x0: rand.Next(skglCanvas.Width),
+                    y0: rand.Next(skglCanvas.Height),
+                    x1: rand.Next(skglCanvas.Width),
+                    y1: rand.Next(skglCanvas.Height),
+                    paint: paint
+                );
             }
+        }
 
-            using (SKImage image = surface.Snapshot()) {
-                using (SKData data = image.Encode()) {
-                    using (System.IO.MemoryStream mStream = new System.IO.MemoryStream(data.ToArray()))
-                    {
-                        imageCanvas.Image?.Dispose();
-                        imageCanvas.Image = new Bitmap(mStream, false);
-                    }
-                }
-            }
-
+        private void doDraw(int lineCounts)
+        {
+            this.lineCount = lineCounts;
+            skglCanvas.Invalidate();
             Application.DoEvents();
         }
 
         private void btn10Lines_Click(object sender, EventArgs e)
         {
-            Render(10);
+            doDraw(10);
         }
 
         private void btn1kLines_Click(object sender, EventArgs e)
         {
-            Render(1000);
+            doDraw(1000);
         }
 
         private void btn10kLines_Click(object sender, EventArgs e)
         {
-            Render(10000);
+            doDraw(10000);
         }
 
         private void btn100kLines_Click(object sender, EventArgs e)
         {
-            Render(100000);
+            doDraw(100000);
         }
+
     }
 }
