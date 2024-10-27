@@ -70,7 +70,6 @@ namespace BasicSkiaGUI
             }
 
             Application.DoEvents();
-            
         }
 
         private void btn10Lines_Click(object sender, EventArgs e)
